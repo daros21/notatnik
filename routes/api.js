@@ -8,6 +8,7 @@ const {
   getAllNotes,
   getNote,
   deleteNote,
+  deleteAllNotes,
 } = require("../actions/api/noteActions");
 
 router.get("/test", homepage);
@@ -21,7 +22,9 @@ router.get("/notes/:id", getNote);
 router.post("/notes", saveNote);
 // edytowanie notatki
 router.put("/notes/:id", updateNote);
-// usuwanie notatki
+// usuwanie konkretnej notatki
 router.delete("/notes/:id", deleteNote);
+// usuwanie wszystkich notatek
+router.delete("/notes", deleteAllNotes);
 
 module.exports = router;
