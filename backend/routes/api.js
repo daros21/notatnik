@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { homepage } = require("../actions/api/test");
+const { homepage } = require("../api/test");
 const {
   saveNote,
   updateNote,
@@ -9,7 +9,7 @@ const {
   getNote,
   deleteNote,
   deleteAllNotes,
-} = require("../actions/api/noteActions");
+} = require("../api/noteActions");
 
 router.get("/test", homepage);
 router.get("/", saveNote);

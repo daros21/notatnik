@@ -1,4 +1,4 @@
-const Note = require("../../db/models/note");
+const Note = require("../db/models/note");
 
 class NoteActions {
   async saveNote(req, res) {
