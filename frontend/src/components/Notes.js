@@ -4,6 +4,7 @@ import "./notes.css";
 import NewNote from "./NewNote";
 import Modal from "react-modal";
 import EditNote from "./EditNote";
+import axios from "../axios";
 
 class Notes extends React.Component {
   constructor(props) {
@@ -11,36 +12,39 @@ class Notes extends React.Component {
     this.state = {
       editNote: {},
       showEditModal: false,
-      notes: [
-        {
-          id: "123154",
-          title: "wykąpać psa",
-          description: "jutro ywkalakdl",
-        },
-        {
-          id: "4648",
-          title: "umyc auto",
-          description: "786946 ywkalakdl",
-        },
-      ],
+      notes: [],
     };
   }
 
-  deleteNote(id) {
-    console.log("usuwanie notatki " + id);
-    const notes = [...this.state.notes].filter((note) => note.id !== id);
+  componentDidMount() {
+    this.fetchNotes();
+  }
+
+  async fetchNotes() {
+    const res = await axios.get("/notes");
+    const notes = res.data;
     this.setState({ notes });
   }
 
-  addNote(note) {
-    const notes = [...this.state.notes];
-    notes.push(note);
+  async deleteNote(_id) {
+    console.log("usuwanie notatki " + _id);
+    const notes = [...this.state.notes].filter((note) => note._id !== _id);
+    await axios.delete("/notes/" + _id);
     this.setState({ notes });
   }
 
-  editNote(note) {
+  async addNote(note) {
     const notes = [...this.state.notes];
-    const index = notes.findIndex((x) => x.id === note.id);
+    const res = await axios.post("/notes", note);
+    const newNote = res.data;
+    notes.push(newNote);
+    this.setState({ notes });
+  }
+
+  async editNote(note) {
+    await axios.put("/notes/" + note._id, note);
+    const notes = [...this.state.notes];
+    const index = notes.findIndex((x) => x._id === note._id);
     if (index >= 0) {
       notes[index] = note;
       this.setState({ notes });
@@ -70,18 +74,18 @@ class Notes extends React.Component {
             onEdit={(note) => this.editNote(note)}
             title={this.state.editNote.title}
             description={this.state.editNote.description}
-            id={this.state.editNote.id}
+            _id={this.state.editNote._id}
           />
           <button onClick={() => this.toggleModal()}>Anuluj</button>
         </Modal>
 
         {this.state.notes.map((note) => (
           <Note
-            key={note.id}
+            key={note._id}
             title={note.title}
             description={note.description}
-            id={note.id}
-            onDelete={(id) => this.deleteNote(id)}
+            _id={note._id}
+            onDelete={(_id) => this.deleteNote(_id)}
             onEdit={(note) => this.editNoteHandler(note)}
           />
         ))}
