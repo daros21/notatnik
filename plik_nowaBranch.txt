@@ -1,2 +1,2 @@
 to jest plik na nowej branchy
-edycja pliku
+edycja pliku na nowej branchy
