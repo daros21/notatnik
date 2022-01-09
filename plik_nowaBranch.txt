@@ -1,2 +1,4 @@
 to jest plik na nowej branchy
 edycja pliku na nowej branchy
+edycja na kolejnej branchy
+kolejna edycja na kolejnej branchy
